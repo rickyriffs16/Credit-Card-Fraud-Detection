@@ -1,4 +1,4 @@
-# SmartFraud: Enterprise Fraud Detection System
+# Credit Card Fraud Detection System
 
 A complete, production-ready fraud detection dashboard built with Streamlit. This application uses Machine Learning (Random Forest, XGBoost, etc.) to detect fraudulent credit card transactions, featuring user authentication, exploratory data analysis, model training, and bulk prediction capabilities.
 

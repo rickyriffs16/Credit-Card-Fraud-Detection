@@ -1,0 +1,365 @@
+{
+  "Logistic Regression": {
+    "accuracy": 97.43,
+    "precision": 5.81,
+    "recall": 91.84,
+    "f1_score": 10.94,
+    "auc_roc": 96.98,
+    "confusion_matrix": {
+      "true_negative": 55406,
+      "false_positive": 1458,
+      "false_negative": 8,
+      "true_positive": 90
+    },
+    "false_positive_rate": 2.564,
+    "training_time_seconds": 3.611,
+    "model_filename": "logistic_regression.pkl",
+    "abbreviation": "LR",
+    "description": "Linear model using sigmoid function for fraud probability.",
+    "icon": "\ud83d\udcca",
+    "top_features": [
+      {
+        "feature": "Scaled_Amount",
+        "importance": 2.396777
+      },
+      {
+        "feature": "V14",
+        "importance": 1.712499
+      },
+      {
+        "feature": "V10",
+        "importance": 1.601197
+      },
+      {
+        "feature": "V20",
+        "importance": 1.376589
+      },
+      {
+        "feature": "V17",
+        "importance": 1.363261
+      },
+      {
+        "feature": "V16",
+        "importance": 1.278525
+      },
+      {
+        "feature": "V4",
+        "importance": 1.096
+      },
+      {
+        "feature": "V12",
+        "importance": 1.085045
+      },
+      {
+        "feature": "V28",
+        "importance": 1.052845
+      },
+      {
+        "feature": "V5",
+        "importance": 0.982002
+      },
+      {
+        "feature": "V1",
+        "importance": 0.947455
+      },
+      {
+        "feature": "V22",
+        "importance": 0.7232
+      },
+      {
+        "feature": "V2",
+        "importance": 0.592542
+      },
+      {
+        "feature": "V9",
+        "importance": 0.589892
+      },
+      {
+        "feature": "V7",
+        "importance": 0.580553
+      }
+    ]
+  },
+  "Decision Tree": {
+    "accuracy": 98.35,
+    "precision": 7.91,
+    "recall": 80.61,
+    "f1_score": 14.4,
+    "auc_roc": 89.5,
+    "confusion_matrix": {
+      "true_negative": 55944,
+      "false_positive": 920,
+      "false_negative": 19,
+      "true_positive": 79
+    },
+    "false_positive_rate": 1.6179,
+    "training_time_seconds": 36.206,
+    "model_filename": "decision_tree.pkl",
+    "abbreviation": "DT",
+    "description": "Tree-based model splitting data using feature thresholds.",
+    "icon": "\ud83c\udf33",
+    "top_features": [
+      {
+        "feature": "V14",
+        "importance": 0.764963
+      },
+      {
+        "feature": "V4",
+        "importance": 0.057163
+      },
+      {
+        "feature": "V12",
+        "importance": 0.032456
+      },
+      {
+        "feature": "V1",
+        "importance": 0.013227
+      },
+      {
+        "feature": "V11",
+        "importance": 0.013088
+      },
+      {
+        "feature": "V8",
+        "importance": 0.013043
+      },
+      {
+        "feature": "V13",
+        "importance": 0.011225
+      },
+      {
+        "feature": "Scaled_Amount",
+        "importance": 0.010055
+      },
+      {
+        "feature": "V26",
+        "importance": 0.009866
+      },
+      {
+        "feature": "V18",
+        "importance": 0.009773
+      },
+      {
+        "feature": "V15",
+        "importance": 0.009016
+      },
+      {
+        "feature": "V10",
+        "importance": 0.006709
+      },
+      {
+        "feature": "V3",
+        "importance": 0.005987
+      },
+      {
+        "feature": "Scaled_Time",
+        "importance": 0.005825
+      },
+      {
+        "feature": "V7",
+        "importance": 0.004856
+      }
+    ]
+  },
+  "Random Forest": {
+    "accuracy": 99.9,
+    "precision": 67.48,
+    "recall": 84.69,
+    "f1_score": 75.11,
+    "auc_roc": 97.38,
+    "confusion_matrix": {
+      "true_negative": 56824,
+      "false_positive": 40,
+      "false_negative": 15,
+      "true_positive": 83
+    },
+    "false_positive_rate": 0.0703,
+    "training_time_seconds": 86.23,
+    "model_filename": "random_forest.pkl",
+    "abbreviation": "RF",
+    "description": "Ensemble of decision trees that votes on each prediction.",
+    "icon": "\ud83c\udf32",
+    "top_features": [
+      {
+        "feature": "V14",
+        "importance": 0.222257
+      },
+      {
+        "feature": "V10",
+        "importance": 0.11155
+      },
+      {
+        "feature": "V4",
+        "importance": 0.108416
+      },
+      {
+        "feature": "V17",
+        "importance": 0.084785
+      },
+      {
+        "feature": "V12",
+        "importance": 0.08171
+      },
+      {
+        "feature": "V11",
+        "importance": 0.071671
+      },
+      {
+        "feature": "V3",
+        "importance": 0.068254
+      },
+      {
+        "feature": "V16",
+        "importance": 0.036244
+      },
+      {
+        "feature": "V2",
+        "importance": 0.02651
+      },
+      {
+        "feature": "V7",
+        "importance": 0.02605
+      },
+      {
+        "feature": "V8",
+        "importance": 0.01386
+      },
+      {
+        "feature": "V9",
+        "importance": 0.012673
+      },
+      {
+        "feature": "V21",
+        "importance": 0.012272
+      },
+      {
+        "feature": "V19",
+        "importance": 0.010952
+      },
+      {
+        "feature": "V27",
+        "importance": 0.010795
+      }
+    ]
+  },
+  "XGBoost": {
+    "accuracy": 99.69,
+    "precision": 34.55,
+    "recall": 86.73,
+    "f1_score": 49.42,
+    "auc_roc": 97.6,
+    "confusion_matrix": {
+      "true_negative": 56703,
+      "false_positive": 161,
+      "false_negative": 13,
+      "true_positive": 85
+    },
+    "false_positive_rate": 0.2831,
+    "training_time_seconds": 5.821,
+    "model_filename": "xgboost.pkl",
+    "abbreviation": "XGB",
+    "description": "Gradient-boosted trees learning sequentially from errors.",
+    "icon": "\u26a1",
+    "top_features": [
+      {
+        "feature": "V14",
+        "importance": 0.536019
+      },
+      {
+        "feature": "V4",
+        "importance": 0.049388
+      },
+      {
+        "feature": "V12",
+        "importance": 0.038908
+      },
+      {
+        "feature": "V8",
+        "importance": 0.033386
+      },
+      {
+        "feature": "V13",
+        "importance": 0.021571
+      },
+      {
+        "feature": "V18",
+        "importance": 0.020549
+      },
+      {
+        "feature": "V3",
+        "importance": 0.017135
+      },
+      {
+        "feature": "Scaled_Time",
+        "importance": 0.017041
+      },
+      {
+        "feature": "V26",
+        "importance": 0.017002
+      },
+      {
+        "feature": "V1",
+        "importance": 0.016499
+      },
+      {
+        "feature": "Scaled_Amount",
+        "importance": 0.016408
+      },
+      {
+        "feature": "V17",
+        "importance": 0.015659
+      },
+      {
+        "feature": "V19",
+        "importance": 0.015391
+      },
+      {
+        "feature": "V25",
+        "importance": 0.01532
+      },
+      {
+        "feature": "V10",
+        "importance": 0.014219
+      }
+    ]
+  },
+  "_metadata": {
+    "trained_at": "2026-10-29 11:19:31",
+    "num_train_samples": 454902,
+    "num_test_samples": 56962,
+    "num_features": 30,
+    "feature_names": [
+      "V1",
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V6",
+      "V7",
+      "V8",
+      "V9",
+      "V10",
+      "V11",
+      "V12",
+      "V13",
+      "V14",
+      "V15",
+      "V16",
+      "V17",
+      "V18",
+      "V19",
+      "V20",
+      "V21",
+      "V22",
+      "V23",
+      "V24",
+      "V25",
+      "V26",
+      "V27",
+      "V28",
+      "Scaled_Amount",
+      "Scaled_Time"
+    ],
+    "best_model": "Random Forest"
+  }
+}

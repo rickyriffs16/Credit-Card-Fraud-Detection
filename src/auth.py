@@ -147,13 +147,16 @@ def login_user(username: str, password: str) -> dict:
     if not username.strip() or not password.strip():
         return {"success": False, "message": "Username and password are required.", "user": None}
 
+    clean_user = username.strip()
+    prefix = clean_user.split("@")[0] if "@" in clean_user else clean_user
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     try:
         cursor.execute(
-            "SELECT id, full_name, username, password_hash, role, date_joined, failed_attempts, locked_until FROM users WHERE username = ?",
-            (username,)
+            "SELECT id, full_name, username, password_hash, role, date_joined, failed_attempts, locked_until FROM users WHERE username = ? OR username = ?",
+            (clean_user, prefix)
         )
         row = cursor.fetchone()
 
@@ -403,3 +406,21 @@ def get_system_stats() -> dict:
         "total_predictions": total_predictions,
         "database_size_kb": db_size_kb
     }
+
+# ============================= SESSION PERSISTENCE ========================
+import hashlib
+import secrets
+
+def get_user_by_id(user_id: int) -> dict | None:
+    """Look up a user record by ID. Returns user dict or None."""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id, full_name, username, role, date_joined FROM users WHERE id = ?",
+        (user_id,)
+    )
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return {"id": row[0], "full_name": row[1], "username": row[2], "role": row[3], "date_joined": row[4]}
+    return None

@@ -16,13 +16,9 @@ ENV/
 data/sample_data.csv
 *.csv
 models/*.pkl
-models/model_metrics.json
 
 # Streamlit configs are tracked
 
 # OS generated files
 .DS_Store
 Thumbs.db
-
-# Local Notes
-Study_Guide.md
