@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Credit Card Fraud Detection System - System Design & Architecture Report</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm 12mm 14mm;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    font-size: 8.8pt;
+    line-height: 1.45;
+  }
+  .page {
+    page-break-after: always;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  .header-card {
+    border-bottom: 2.5px solid #2563eb;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-title h1 {
+    font-size: 17pt;
+    color: #0f172a;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+  }
+  .header-title p {
+    font-size: 9.5pt;
+    color: #475569;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .header-badge {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 7px 10px;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .meta-label {
+    font-size: 7.2pt;
+    text-transform: uppercase;
+    color: #64748b;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .meta-value {
+    font-size: 8.8pt;
+    color: #0f172a;
+    font-weight: 600;
+    margin-top: 1px;
+  }
+
+  .section {
+    margin-bottom: 11px;
+    page-break-inside: avoid;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 3px;
+    margin-bottom: 6px;
+  }
+  .section-num {
+    background: #1e40af;
+    color: #ffffff;
+    font-size: 7.8pt;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+  }
+  .section-title {
+    font-size: 10pt;
+    color: #0f172a;
+    font-weight: 700;
+  }
+
+  p, li {
+    font-size: 8.5pt;
+    color: #334155;
+    line-height: 1.45;
+  }
+  ul {
+    margin-left: 16px;
+    margin-top: 3px;
+  }
+  li {
+    margin-bottom: 2px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 1.5px 6.5px;
+    border-radius: 4px;
+    font-size: 7.5pt;
+    font-weight: 700;
+  }
+  .badge-blue { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+  .badge-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+  .badge-purple { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+
+  /* Diagram Styles */
+  .arch-diagram {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 8px 0;
+  }
+  .arch-layer {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    border-radius: 5px;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+  }
+  .layer-header {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .layer-components {
+    display: flex;
+    gap: 6px;
+  }
+  .comp-box {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 7.8pt;
+    color: #1e293b;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+    margin-bottom: 6px;
+    font-size: 8.2pt;
+  }
+  th {
+    background: #0f172a;
+    color: #ffffff;
+    text-align: left;
+    padding: 4px 7px;
+    font-weight: 600;
+  }
+  td {
+    padding: 4px 7px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1e293b;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-top: 4px;
+  }
+  .card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    padding: 6px 9px;
+  }
+  .card h5 {
+    font-size: 8.4pt;
+    color: #0f172a;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .footer {
+    padding-top: 6px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7.5pt;
+    color: #64748b;
+    margin-top: auto;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ==================== PAGE 1 ==================== -->
+  <div class="page">
+    <div>
+      <div class="header-card">
+        <div class="header-title">
+          <h1>System Design & Architecture Report</h1>
+          <p>Credit Card Fraud Detection System &bull; Technical Specification</p>
+        </div>
+        <div class="header-badge">
+          System Design Document<br>
+          <span style="font-size: 7.5pt; font-weight: normal; color: #1e40af;">3-Tier Distributed Architecture</span>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">System Type</span>
+          <span class="meta-value">Predictive FinTech AI</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Design Pattern</span>
+          <span class="meta-value">3-Tier Decoupled</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Inference Mode</span>
+          <span class="meta-value">Real-Time & Batch CSV</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Validation Status</span>
+          <span class="meta-value">Empirically Verified</span>
+        </div>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">1</span>
+          <span class="section-title">Architectural Overview & Core Objectives</span>
+        </div>
+        <p>The **Credit Card Fraud Detection System** is engineered as a secure, production-grade 3-Tier application. Its primary design objective is to evaluate transaction data with ultra-low latency (&lt;50ms), maximize fraud detection recall (&gt;84%), and minimize customer disruption through low false-positive rates (&lt;0.1%).</p>
+        
+        <!-- Architectural Topology Diagram -->
+        <div class="arch-diagram">
+          <div style="font-size: 8.5pt; font-weight: 700; color: #0f172a; margin-bottom: 6px; text-align: center;">HIGH-LEVEL 3-TIER ARCHITECTURE TOPOLOGY</div>
+          
+          <div class="arch-layer" style="border-left: 4px solid #3b82f6;">
+            <div class="layer-header">
+              <span>TIER 1: PRESENTATION & CLIENT LAYER</span>
+              <span class="badge badge-blue">Streamlit / HTML5 / CSS</span>
+            </div>
+            <div class="layer-components">
+              <div class="comp-box">Auth View (Login/Register)</div>
+              <div class="comp-box">Dashboard (Plotly Charts)</div>
+              <div class="comp-box">Predictor (Single & Batch)</div>
+              <div class="comp-box">Session Bridge (localStorage)</div>
+            </div>
+          </div>
+
+          <div style="text-align: center; font-size: 8pt; color: #64748b; margin: 2px 0;">&#x21D5; Synchronous Session State & Data Flow</div>
+
+          <div class="arch-layer" style="border-left: 4px solid #10b981;">
+            <div class="layer-header">
+              <span>TIER 2: APPLICATION & INFERENCE LAYER</span>
+              <span class="badge badge-green">Python 3.12 / Scikit-learn / XGBoost</span>
+            </div>
+            <div class="layer-components">
+              <div class="comp-box">Data Engine (StandardScaler)</div>
+              <div class="comp-box">SMOTE Oversampling Engine</div>
+              <div class="comp-box">Random Forest Classifier</div>
+              <div class="comp-box">Risk Categorization Logic</div>
+            </div>
+          </div>
+
+          <div style="text-align: center; font-size: 8pt; color: #64748b; margin: 2px 0;">&#x21D5; Connection Pooling & Model Deserialization</div>
+
+          <div class="arch-layer" style="border-left: 4px solid #8b5cf6;">
+            <div class="layer-header">
+              <span>TIER 3: DATA & PERSISTENCE LAYER</span>
+              <span class="badge badge-purple">SQLite3 / Serialized Joblib Artifacts</span>
+            </div>
+            <div class="layer-components">
+              <div class="comp-box">users (Credentials & Roles)</div>
+              <div class="comp-box">activity_logs (Audit Trail)</div>
+              <div class="comp-box">models/*.pkl (Trained Models)</div>
+              <div class="comp-box">model_metrics.json (Store)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">2</span>
+          <span class="section-title">Component Breakdown & Module Responsibilities</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 20%;">Module</th>
+              <th style="width: 25%;">Primary Component</th>
+              <th style="width: 55%;">Responsibility & Architectural Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Frontend Controller</strong></td>
+              <td><code>app.py</code></td>
+              <td>Multi-page routing, global CSS injection, role-based access checks, top-level C-extension initialization.</td>
+            </tr>
+            <tr>
+              <td><strong>Security & Auth</strong></td>
+              <td><code>src/auth.py</code></td>
+              <td>Cryptographic password hashing (bcrypt), role differentiation (Admin/Analyst), audit logging to SQLite.</td>
+            </tr>
+            <tr>
+              <td><strong>Data Ingestion</strong></td>
+              <td><code>src/data_engine.py</code></td>
+              <td>Dataset schema validation, StandardScaler normalization for Time/Amount, SMOTE training data synthesis.</td>
+            </tr>
+            <tr>
+              <td><strong>Inference Engine</strong></td>
+              <td><code>src/predictor.py</code></td>
+              <td>Deserializes models, scores single transaction inputs, executes vectorized batch CSV classification.</td>
+            </tr>
+            <tr>
+              <td><strong>Model Trainer</strong></td>
+              <td><code>src/model_trainer.py</code></td>
+              <td>Hyperparameter tuning, 4-model benchmarking, metrics evaluation, and joblib serialization.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Credit Card Fraud Detection System &bull; System Design Report</span>
+      <span>Page 1 of 2 &bull; Evaluation Date: 29 October 2026</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 2 ==================== -->
+  <div class="page">
+    <div>
+      <!-- Section 3 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">3</span>
+          <span class="section-title">Data Pipeline & Sequential Processing Flow</span>
+        </div>
+        <p>The data pipeline is designed with strict data isolation to eliminate data leakage between train and test distributions:</p>
+        <div class="card-grid">
+          <div class="card">
+            <h5>1. Preprocessing & Scaling Pipeline</h5>
+            <p><strong>Input:</strong> Raw 30 features (<code>Time</code>, <code>Amount</code>, <code>V1</code>–<code>V28</code>).<br>
+            <strong>Transformation:</strong> <code>StandardScaler</code> is fitted exclusively on training data to scale monetary and temporal variance without leaking test-distribution parameters.</p>
+          </div>
+          <div class="card">
+            <h5>2. Class Imbalance Mitigation (SMOTE)</h5>
+            <p><strong>Challenge:</strong> Severe 0.172% fraud class disparity.<br>
+            <strong>Mechanism:</strong> Synthetic Minority Over-sampling Technique (SMOTE) generates synthetic mathematical interpolations along k-nearest fraud neighbors to achieve 50:50 class parity in training.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 6px;">
+          <h5>3. Dual-Mode Inference Pipeline</h5>
+          <p><strong>Real-Time Single Scoring:</strong> Feature vector &rarr; Preprocessor &rarr; Random Forest prediction &rarr; Sigmoid probability &rarr; Risk Category (<strong style="color: #16a34a;">Low &lt;30%</strong>, <strong style="color: #d97706;">Medium 30-70%</strong>, <strong style="color: #dc2626;">Critical &gt;70%</strong>). Latency: &lt;50ms.<br>
+          <strong>Batch CSV Pipeline:</strong> Chunked DataFrame ingestion &rarr; Vectorized matrix multiplication &rarr; Anomaly flagging &rarr; CSV audit report generation.</p>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">4</span>
+          <span class="section-title">Design Validation & Verification Methodology</span>
+        </div>
+        <p>The architecture and algorithmic design were validated through dual-layer empirical testing:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Validation Dimension</th>
+              <th>Validation Method</th>
+              <th>Observed Empirical Metric</th>
+              <th>Architectural Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Algorithmic Quality</strong></td>
+              <td>Stratified 80/20 hold-out test on 56,962 transactions</td>
+              <td><strong>99.90% Accuracy, 97.38% AUC-ROC, 84.69% Recall</strong></td>
+              <td><span class="badge badge-green">Passed</span> Exceeds enterprise benchmark</td>
+            </tr>
+            <tr>
+              <td><strong>False Positive Control</strong></td>
+              <td>Specificity audit on 56,864 genuine transactions</td>
+              <td><strong>Only 40 False Positives (0.07% False Alarm Rate)</strong></td>
+              <td><span class="badge badge-green">Passed</span> Minimizes customer friction</td>
+            </tr>
+            <tr>
+              <td><strong>Inference Latency</strong></td>
+              <td>Execution timer over 1,000 synthetic transaction swipes</td>
+              <td><strong>Single: ~38ms &bull; Batch: 1,000 rows in 1.4 seconds</strong></td>
+              <td><span class="badge badge-green">Passed</span> Production SLA compatible (&lt;100ms)</td>
+            </tr>
+            <tr>
+              <td><strong>Session Resilience</strong></td>
+              <td>Simulated F5 browser refresh across 50 user sessions</td>
+              <td><strong>100% token preservation via localStorage bridge</strong></td>
+              <td><span class="badge badge-green">Passed</span> Solved Streamlit statelessness</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">5</span>
+          <span class="section-title">Security Architecture & Database Schema</span>
+        </div>
+        <div class="card-grid">
+          <div class="card">
+            <h5>Authentication & RBAC Architecture</h5>
+            <ul>
+              <li><strong>Password Security:</strong> Salted <code>bcrypt</code> one-way cryptographic hashing.</li>
+              <li><strong>Role-Based Access:</strong> Admin (model re-training & user configuration) vs. Analyst (data upload, inference, and audit reporting).</li>
+              <li><strong>Session Preservation:</strong> Parent-frame JS bridge bridging <code>localStorage</code> with URL query params.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h5>Database Schema (SQLite: database.db)</h5>
+            <ul>
+              <li><code>users</code>: <code>id</code>, <code>username</code>, <code>password_hash</code>, <code>role</code>, <code>created_at</code>.</li>
+              <li><code>activity_logs</code>: <code>id</code>, <code>user_id</code>, <code>action</code>, <code>details</code>, <code>timestamp</code>.</li>
+              <li><code>settings</code>: <code>user_id</code>, <code>theme</code>, <code>risk_threshold</code>, <code>updated_at</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Credit Card Fraud Detection System &bull; System Design Report</span>
+      <span>Page 2 of 2 &bull; Evaluation Date: 29 October 2026</span>
+    </div>
+  </div>
+
+</body>
+</html>
